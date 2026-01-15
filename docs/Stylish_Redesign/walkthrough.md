@@ -1,141 +1,25 @@
-# ヒーローセクションの泡エフェクトの中心配置
+# Walkthrough - Concept Section Layout Rescue
 
-## 変更内容
-ユーザーのご要望に合わせて、ヒーローセクションの「泡（点）」のエフェクトを画面下部の波から切り離し、**画面中央**に配置しました。
+## Overview
+Based on the urgent request to fix the broken layout, I have completely rewritten the CSS and structure for `ConceptSection.svelte`. The focus was on strictly adhering to the "2-column 50/50" rule and properly implementing vertical text without layout constraints.
 
-### 修正ファイル
-*   `src/components/HeroSection.svelte`
+## Changes
 
-### 具体的な変更点
-1.  **コンテナの分離**:
-    *   泡のエフェクト用に `.bubbles-container` という新しいコンテナを作成しました。
-2.  **配置の調整**:
-    *   コンテナを `top: 50%`, `left: 50%` に設定し、画面の完全に中央に配置しました。
-    *   コンテナサイズを `300px x 300px` に設定し、エフェクトが中央に集中するようにしました。
-3.  **出現ロジックの変更**:
-    *   泡の横位置（`left`）をコンテナ内での `0-100%` に変更しました。これにより、画面全体ではなく、中央のコンテナ内でのみ泡が発生します。
-4.  **重なりの解消**:
-    *   中央に集めたことで、右上のメニューボタンと泡が重なる問題を解消しました。
+### `src/components/ConceptSection.svelte`
+- **Reset & Rewrite**: Removed all previous complex styles.
+- **Layout**: Implemented a strict 2-column flex layout (`50%` width each) with a `5vw` gap.
+- **Typography**: 
+    - Applied `writing-mode: vertical-rl` to the text.
+    - Set `height: 480px` layout flow to ensuring text spans multiple vertical lines correctly.
+    - Added `letter-spacing: 0.1em` and `line-height: 2.2` for the Japanese aesthetic.
+    - **[UPDATE] Fixed Line Breaks**: Replaced text with the exact user-provided content using `<br />` tags to enforce specific line breaks and spacing, avoiding reliance on auto-wrapping.
+- **Animation**: Added a slide-in animation (`opacity` and `transform: translateX`) for the top-left image, triggered by `IntersectionObserver`.
 
-## 確認方法
-1.  ブラウザでトップページを開きます。
-2.  ヒーローセクション（ファーストビュー）を確認します。
-3.  白い泡（点）のエフェクトが、画面中央のタイトル付近にふわふわと浮いていることを確認してください。
-4.  右上のメニューボタン付近に泡が表示されていないことを確認してください。
+## Verification Results
 
-## ヘッダーのパジネーションドット中心配置
+### Browser Verification
+- **Layout**: Confirmed 50/50 split between image/text column and map column.
+- **Text**: Confirmed vertical orientation (`vertical-rl`) with manual line breaks properly rendered.
+- **Animation**: Validated correct transition properties on the image.
 
-### 変更内容
-ヘッダー右上にあった5つの白い点（パジネーションドット）を、**画面上部の中央**に移動させました。これにより、右上のメニューボタン（MENU）との重なりが完全に解消されました。
-
-### 修正ファイル
-*   `src/components/Header.svelte`
-
-### 具体的な変更点
-*   `.header-content` の `justify-content` を `flex-end`（右寄せ）から `center`（中央寄せ）に変更しました。
-
-### 確認方法
-1.  ブラウザでトップページを開きます。
-2.  画面最上部を確認します。
-3.  白い5つの点が、画面の中央に配置されていることを確認してください。
-4.  右上のメニューボタンと重なっていないことを確認してください。
-
-## ヒーロー画像のカルーセル化
-
-### 変更内容
-ヒーローセクションの背景画像を、3枚の画像が5秒ごとに切り替わるカルーセルに変更しました。
-また、パジネーションドットをこのカルーセルと連動させ、画像とセットで管理するように変更しました。
-
-### 修正・削除ファイル
-*   `src/components/HeroSection.svelte` (修正: カルーセルロジック追加)
-*   `src/App.svelte` (修正: Header削除)
-*   `src/components/Header.svelte` (削除: HeroSectionに統合)
-
-### 具体的な変更点
-1.  **画像切り替え**:
-    *   `gallery-1.jpg`, `gallery-2.jpg`, `gallery-3.jpg` の3枚を使用。
-    *   5秒（5000ms）ごとに自動でフェード切り替え。
-2.  **パジネーションドットの統合**:
-    *   `HeroSection` 内にドットを配置し、現在表示中の画像と連動して光るようにしました。
-    *   ドットをクリックすると、該当する画像に手動で切り替わります。
-    *   配置は以前のヘッダー同様、画面中央上部（`top: 24px`）です。
-
-### 確認方法
-1.  トップページを開き、背景画像が表示されるか確認。
-2.  5秒待つと画像がなめらかに次の画像（gallery-2 -> gallery-3）に切り替わるか確認。
-3.  上部中央の3つのドットが、画像の切り替えに合わせて連動しているか確認。
-4.  ドットをクリックして、意図した画像に切り替わるか確認。
-
-## 店舗画像のスタッガーアニメーション（Framer Motion風）
-
-### 変更内容
-店舗紹介セクション（Store Introduction）の画像3枚が、スクロール時に**横方向（右）からスライドして順番に表示**されるアニメーションを追加しました。
-「Framer Motion」のような心地よい動きを目指し、イージング（動きの加速・減速）と出現タイミングを調整しています。
-
-### 修正ファイル
-*   `src/components/StoreSection.svelte`
-
-### 具体的な変更点
-1.  **初期状態**: 画像を透明（`opacity: 0`）にし、右に100pxずらして配置（`translateX(100px)`）。
-2.  **出現アニメーション**:
-    *   セクションが表示されたら元の位置（`translateX(0)`）に戻るアニメーションを適用。
-    *   イージングに `cubic-bezier(0.16, 1, 0.3, 1)` を使用し、自然な急加速・緩減速を実現。
-3.  **スタッガー効果（時間差）**:
-    *   1枚目: 0.1秒遅れ
-    *   2枚目: 0.3秒遅れ
-    *   3枚目: 0.5秒遅れ
-    *   これにより、画像が「タタタン」とリズミカルに現れます。
-
-### 確認方法
-1.  トップページを開き、下にスクロールして「店舗紹介」セクションを表示させます。
-### 確認方法
-1.  トップページを開き、下にスクロールして「店舗紹介」セクションを表示させます。
-2.  画像が右から左へ、時間差で滑らかにスライドインしてくることを確認してください。
-
-## テキストの表示バグ修正（文字がついてくる問題）
-
-### 変更内容
-「店舗紹介」などの見出しテキストがスクロール時に固定されてついてきてしまう不具合を修正しました。
-これは、全体のナビゲーションバー用の `header` クラス（固定表示設定）が、各セクションの見出し部分（同じく `header` クラスを使用していた）に誤って適用されていたことが原因です。
-
-### 修正ファイル
-*   `src/components/StoreSection.svelte`
-*   `src/components/Features2Section.svelte`
-*   `src/components/FAQSection.svelte`
-
-### 具体的な変更点
-*   各セクション内の `<div class="header">` を `<div class="section-header">` にクラス名を変更し、全体の固定ヘッダー設定の影響を受けないようにしました。
-
-### 確認方法
-1.  ページをスクロールした際に、「店舗紹介」や「家づくりの特徴」などの文字が、画面上の特定の位置に張り付かずに、コンテンツと一緒に自然にスクロールすることを確認してください。
-
-## スクロールインジケーターの追加
-
-### 変更内容
-ヒーローセクション（トップ画面）の下部中央に、スクロールを促す「Scroll」マークを追加しました。
-メニューボタンの雰囲気に合わせ、ゆったりとした浮遊アニメーション（floating）を適用しています。
-
-### 修正ファイル
-*   `src/components/HeroSection.svelte`
-
-### 具体的な変更点
-1.  **デザイン**:
-    *   白い「Scroll」テキスト（英語フォント使用）と下矢印アイコンを使用。
-    *   シンプルで上品なデザインに。
-2.  **アニメーション**:
-    *   3秒かけてゆっくりと上下に揺れる動き（Floating Animation）。
-    *   動きに合わせて透明度も微細に変化し、リラックスした印象を与えます。
-3.  **配置**:
-    *   画面最下部から `40px` の位置に中央揃えで配置。
-
-### 確認方法
-1.  トップページ最上部（ヒーローセクション）を表示。
-2.  画面下部に「Scroll」の文字と矢印が表示されていることを確認。
-
-### 確認方法
-1.  トップページ最上部（ヒーローセクション）を表示。
-2.  画面下部に「Scroll」の文字と矢印が表示されていることを確認。
-3.  そのままゆっくりと下にスクロールする。
-4.  Scrollマークが**通常よりゆっくりと**下に移動しつつ（パララックス効果）、徐々に薄くなって消えることを確認してください（フェードアウト）。
-
-
+![Concept Section Layout Fix](./concept_section_layout_1768496458139.png)

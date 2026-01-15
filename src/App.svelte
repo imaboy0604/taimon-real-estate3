@@ -2,7 +2,8 @@
   import NavigationBar from "./components/NavigationBar.svelte";
   import HeroSection from "./components/HeroSection.svelte";
   import FeaturesSection from "./components/FeaturesSection.svelte";
-  import StoreSection from "./components/StoreSection.svelte";
+  // import StoreSection from "./components/StoreSection.svelte";
+  import ConceptSection from "./components/ConceptSection.svelte";
   import Features2Section from "./components/Features2Section.svelte";
   import Features3Section from "./components/Features3Section.svelte";
   import FAQSection from "./components/FAQSection.svelte";
@@ -27,7 +28,8 @@
   <HeroSection />
   <NavigationBar />
   <FeaturesSection />
-  <StoreSection />
+  <ConceptSection />
+  <!-- <StoreSection /> -->
   <Features2Section />
   <Features3Section />
   <FAQSection />
