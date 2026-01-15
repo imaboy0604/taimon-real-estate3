@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Header from "./components/Header.svelte";
   import NavigationBar from "./components/NavigationBar.svelte";
   import HeroSection from "./components/HeroSection.svelte";
   import FeaturesSection from "./components/FeaturesSection.svelte";
@@ -25,7 +24,6 @@
 </svelte:head>
 
 <main>
-  <Header />
   <HeroSection />
   <NavigationBar />
   <FeaturesSection />

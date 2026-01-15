@@ -1,30 +1,39 @@
-<script>
-  import { onMount } from 'svelte';
+<script lang="ts">
+  import { onMount } from "svelte";
 
-  let openIndex = -1;
-  let sectionElement;
+  let openIndex: number = -1;
+  let sectionElement: HTMLElement;
   let isVisible = false;
 
-  const faqs = [
+  interface FAQ {
+    question: string;
+    answer: string;
+  }
+
+  const faqs: FAQ[] = [
     {
-      question: 'タイモン不動産とは何ですか？',
-      answer: 'タイモン不動産は、ゲート付きの物件群で構成される住まいのコンセプトです。快適で安全、そして手頃な価格の住まいを、様々な充実したモダンな施設と共に提供しています。'
+      question: "タイモン不動産とは何ですか？",
+      answer:
+        "タイモン不動産は、ゲート付きの物件群で構成される住まいのコンセプトです。快適で安全、そして手頃な価格の住まいを、様々な充実したモダンな施設と共に提供しています。",
     },
     {
-      question: 'タイモン不動産の物件はどこにありますか？',
-      answer: 'タイモン不動産の物件は、都心、空港、その他の重要な施設へのアクセスが容易な、戦略的に選ばれた立地にあります。'
+      question: "タイモン不動産の物件はどこにありますか？",
+      answer:
+        "タイモン不動産の物件は、都心、空港、その他の重要な施設へのアクセスが容易な、戦略的に選ばれた立地にあります。",
     },
     {
-      question: 'タイモン不動産の物件の価格とタイプはどのくらいですか？',
-      answer: 'タイモン不動産は、36㎡タイプから120㎡タイプまで、様々なタイプの物件を提供しています。価格はタイプと立地によって異なります。詳細な価格情報については、お気軽にお問い合わせください。'
+      question: "タイモン不動産の物件の価格とタイプはどのくらいですか？",
+      answer:
+        "タイモン不動産は、36㎡タイプから120㎡タイプまで、様々なタイプの物件を提供しています。価格はタイプと立地によって異なります。詳細な価格情報については、お気軽にお問い合わせください。",
     },
     {
-      question: 'タイモン不動産ではどのような施設が提供されていますか？',
-      answer: 'タイモン不動産では、遊び場、スポーツ施設、ショッピングセンター、学校、セキュリティシステムなど、様々なモダンな施設を提供しています。'
-    }
+      question: "タイモン不動産ではどのような施設が提供されていますか？",
+      answer:
+        "タイモン不動産では、遊び場、スポーツ施設、ショッピングセンター、学校、セキュリティシステムなど、様々なモダンな施設を提供しています。",
+    },
   ];
 
-  function toggleFAQ(index) {
+  function toggleFAQ(index: number) {
     openIndex = openIndex === index ? -1 : index;
   }
 
@@ -40,8 +49,8 @@
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px',
-      }
+        rootMargin: "0px 0px -50px 0px",
+      },
     );
 
     if (sectionElement) {
@@ -56,9 +65,13 @@
   });
 </script>
 
-<section class="faq-section" class:visible={isVisible} bind:this={sectionElement}>
+<section
+  class="faq-section"
+  class:visible={isVisible}
+  bind:this={sectionElement}
+>
   <div class="container">
-    <div class="header">
+    <div class="section-header">
       <h2 class="title">よくある質問</h2>
       <p class="subtitle">
         ご質問がございましたら、<br />
@@ -71,18 +84,28 @@
         <div class="faq-item" class:open={openIndex === index}>
           <button class="faq-question" on:click={() => toggleFAQ(index)}>
             <span class="question-text">{faq.question}</span>
-            <svg 
-              width="20" 
-              height="20" 
-              viewBox="0 0 20 20" 
-              fill="none" 
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
               class="icon"
             >
               {#if openIndex === index}
-                <path d="M5 10H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path
+                  d="M5 10H15"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
               {:else}
-                <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path
+                  d="M10 5V15M5 10H15"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
               {/if}
             </svg>
           </button>
@@ -100,12 +123,14 @@
 <style>
   .faq-section {
     position: relative;
-    background: url('/images/gallery-2.jpg') center/cover;
+    background: url("/images/gallery-2.jpg") center/cover;
     padding: 120px 80px;
     overflow: hidden;
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition:
+      opacity 0.8s ease-out,
+      transform 0.8s ease-out;
   }
 
   .faq-section.visible {
@@ -114,13 +139,17 @@
   }
 
   .faq-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.88) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.88) 100%
+    );
     z-index: 0;
   }
 
@@ -131,27 +160,39 @@
     margin: 0 auto;
   }
 
-  .header {
+  .section-header {
     text-align: center;
     margin-bottom: 64px;
   }
 
   .title {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 44px;
     font-weight: 500;
     line-height: 1.18;
-    color: #12161D;
+    color: #12161d;
     margin-bottom: 24px;
     letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .subtitle {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 18px;
     font-weight: 400;
     line-height: 1.44;
-    color: #61656E;
+    color: #61656e;
     letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
@@ -162,19 +203,19 @@
   }
 
   .faq-item {
-    border: 1px solid #E5E5E6;
+    border: 1px solid #e5e5e6;
     border-radius: 6px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     overflow: hidden;
     transition: all 0.3s ease;
   }
 
   .faq-item:hover {
-    border-color: #D0D0D0;
+    border-color: #d0d0d0;
   }
 
   .faq-item.open {
-    border-color: #12161D;
+    border-color: #12161d;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
@@ -188,17 +229,23 @@
     border: none;
     text-align: left;
     cursor: pointer;
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
-    color: #12161D;
+    color: #12161d;
     letter-spacing: var(--letter-spacing-body-wide, 0.05em);
     transition: color 0.3s ease;
   }
 
   .faq-question:hover {
-    color: #61656E;
+    color: #61656e;
   }
 
   .question-text {
@@ -208,12 +255,14 @@
 
   .faq-question .icon {
     flex-shrink: 0;
-    color: #61656E;
-    transition: transform 0.3s ease, color 0.3s ease;
+    color: #61656e;
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease;
   }
 
   .faq-item.open .icon {
-    color: #12161D;
+    color: #12161d;
   }
 
   .faq-answer {
@@ -233,11 +282,17 @@
   }
 
   .faq-answer p {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 15px;
     font-weight: 400;
     line-height: 1.8;
-    color: #61656E;
+    color: #61656e;
     letter-spacing: var(--letter-spacing-body-wide, 0.05em);
     margin: 0;
   }
@@ -247,7 +302,7 @@
       padding: 80px 20px;
     }
 
-    .header {
+    .section-header {
       margin-bottom: 48px;
     }
 

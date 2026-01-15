@@ -1,15 +1,37 @@
-<script>
-  import { onMount } from 'svelte';
-  
-  const storeImages = [
-    { id: 1, src: '/images/store-exterior.jpg', alt: '店舗外観', label: '外観' },
-    { id: 2, src: '/images/store-interior-1.jpg', alt: '店舗内観1', label: '内観' },
-    { id: 3, src: '/images/store-interior-2.jpg', alt: '店舗内観2', label: '内観' },
+<script lang="ts">
+  import { onMount } from "svelte";
+
+  interface StoreImage {
+    id: number;
+    src: string;
+    alt: string;
+    label: string;
+  }
+
+  const storeImages: StoreImage[] = [
+    {
+      id: 1,
+      src: "/images/store-exterior.jpg",
+      alt: "店舗外観",
+      label: "外観",
+    },
+    {
+      id: 2,
+      src: "/images/store-interior-1.jpg",
+      alt: "店舗内観1",
+      label: "内観",
+    },
+    {
+      id: 3,
+      src: "/images/store-interior-2.jpg",
+      alt: "店舗内観2",
+      label: "内観",
+    },
   ];
-  
-  let sectionElement;
-  let isVisible = false;
-  
+
+  let sectionElement: HTMLElement;
+  let isVisible: boolean = false;
+
   onMount(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -22,8 +44,8 @@
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px',
-      }
+        rootMargin: "0px 0px -50px 0px",
+      },
     );
 
     if (sectionElement) {
@@ -38,9 +60,13 @@
   });
 </script>
 
-<section class="store-section" class:visible={isVisible} bind:this={sectionElement}>
+<section
+  class="store-section"
+  class:visible={isVisible}
+  bind:this={sectionElement}
+>
   <div class="container">
-    <div class="header">
+    <div class="section-header">
       <h2 class="title">店舗紹介</h2>
       <p class="subtitle">
         タイモン不動産の店舗をご紹介します。<br />
@@ -72,7 +98,9 @@
       </div>
       <div class="info-item">
         <h3 class="info-title">お問い合わせ</h3>
-        <p class="info-text">TEL: 03-XXXX-XXXX<br />MAIL: info@taimon-real-estate.jp</p>
+        <p class="info-text">
+          TEL: 03-XXXX-XXXX<br />MAIL: info@taimon-real-estate.jp
+        </p>
       </div>
     </div>
   </div>
@@ -81,29 +109,34 @@
 <style>
   .store-section {
     position: relative;
-    background: url('/images/gallery-2.jpg') center/cover;
+    background: url("/images/gallery-2.jpg") center/cover;
     padding: 120px 80px;
     overflow: hidden;
+    /* セクション自体のフェードインは控えめに */
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: opacity 0.8s ease-out;
   }
 
   .store-section.visible {
     opacity: 1;
-    transform: translateY(0);
   }
 
   .store-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.88) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.88) 100%
+    );
     z-index: 0;
   }
+
+  /* ... (middle styles unchanged) ... */
 
   .container {
     position: relative;
@@ -112,27 +145,39 @@
     margin: 0 auto;
   }
 
-  .header {
+  .section-header {
     text-align: center;
     margin-bottom: 80px;
   }
 
   .title {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 44px;
     font-weight: 500;
     line-height: 1.18;
-    color: #12161D;
+    color: #12161d;
     margin-bottom: 24px;
     letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .subtitle {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 18px;
     font-weight: 400;
     line-height: 1.44;
-    color: #61656E;
+    color: #61656e;
     letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
@@ -149,12 +194,45 @@
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* 初期状態: 透明 & 右にずらす */
+    opacity: 0;
+    transform: translateX(100px);
+    /* 滑らかなスライドインアニメーション (Framer Motion風) */
+    transition:
+      opacity 0.8s ease-out,
+      transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+      /* Custom easeOutQuart-ish */ box-shadow 0.3s ease;
+  }
+
+  /* セクションが表示された時に画像を表示 */
+  :global(.store-section.visible) .gallery-item {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* 時間差で出現させる (Staggered animation) */
+  :global(.store-section.visible) .gallery-item:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  :global(.store-section.visible) .gallery-item:nth-child(2) {
+    transition-delay: 0.3s;
+  }
+  :global(.store-section.visible) .gallery-item:nth-child(3) {
+    transition-delay: 0.5s;
   }
 
   .gallery-item:hover {
-    transform: translateY(-4px);
+    transform: translateY(
+      -4px
+    ); /* hover時は少し浮く（translateX0の上書きに注意が必要だが、hoverはmouse actionなので分離するか、transitionプロパティでカバー） */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    /* hover時のtransformを再定義する必要があるため、!importantか詳細度で勝つ */
+  }
+
+  /* hover時の競合を避けるため、visible状態でのhoverを定義 */
+  :global(.store-section.visible) .gallery-item:hover {
+    transform: translateY(-4px);
   }
 
   .image-wrapper {
@@ -180,7 +258,11 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7) 0%,
+      transparent 100%
+    );
     padding: 24px 20px 20px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -191,7 +273,13 @@
   }
 
   .image-label {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 16px;
     font-weight: 500;
     color: white;
@@ -203,7 +291,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 60px;
     padding-top: 60px;
-    border-top: 1px solid #E5E5E6;
+    border-top: 1px solid #e5e5e6;
   }
 
   .info-item {
@@ -211,21 +299,33 @@
   }
 
   .info-title {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 24px;
     font-weight: 500;
     line-height: 1.33;
-    color: #12161D;
+    color: #12161d;
     margin-bottom: 16px;
     letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .info-text {
-    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-family: var(
+      --font-family-serif,
+      "Noto Serif JP",
+      "Yu Mincho",
+      "游明朝",
+      serif
+    );
     font-size: 16px;
     font-weight: 400;
     line-height: 1.8;
-    color: #61656E;
+    color: #61656e;
     letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
@@ -246,7 +346,7 @@
       padding: 80px 20px;
     }
 
-    .header {
+    .section-header {
       margin-bottom: 60px;
     }
 
