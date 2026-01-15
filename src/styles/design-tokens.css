@@ -4,24 +4,29 @@
 
 :root {
   /* ============================================
-     カラーパレット
+     カラーパレット - Warm & Luxurious
      ============================================ */
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #FAFAFA;
-  --color-bg-tertiary: #F7F7F7;
+  /* 背景色: 真っ白ではなく、温かみのあるエクリュ・グレージュ系 */
+  --color-bg-primary: #FDFBF8;     /* 生成り色 (Ecru White) */
+  --color-bg-secondary: #F5F2EE;   /* 薄いグレージュ */
+  --color-bg-tertiary: #EBE8E1;    /* 少し濃いグレージュ */
   
-  --color-text-primary: #1A1A1A;
-  --color-text-secondary: #61656E;
-  --color-text-light: #999999;
+  --color-text-primary: #2C2825;   /* 墨色に近いダークグレー */
+  --color-text-secondary: #595550; /* 落ち着いたグレー */
+  --color-text-light: #8C8884;     /* 明るめのグレー */
   
-  --color-accent-subtle: #8B7355;
-  --color-accent-grey: #6B6B6B;
-  --color-border: #E5E5E5;
-  --color-border-light: #F0F0F0;
+  /* アクセントカラー: 深みのあるブロンズ・アースカラー */
+  --color-accent-subtle: #967D69;  /* 彩度を落としたブロンズ */
+  --color-accent-grey: #7D7873;    /* ウォームグレー */
+  --color-border: #E0DDD8;         /* 馴染みの良いボーダー色 */
+  --color-border-light: #F2EFEC;
   
   /* ============================================
-     タイポグラフィ - 明朝体メイン
+     タイポグラフィ - Elegant Serif
      ============================================ */
+  /* 欧文フォント（見出し用） */
+  --font-family-en: 'Cormorant Garamond', serif;
+
   /* メインフォント（明朝体） */
   --font-family-serif: 'Noto Serif JP', 'Yu Mincho', '游明朝', 'Hiragino Mincho ProN', 'MS PMincho', serif;
   
@@ -36,30 +41,30 @@
   --font-size-sm: 14px;
   --font-size-base: 16px;
   --font-size-md: 18px;
-  --font-size-lg: 24px;
-  --font-size-xl: 32px;
-  --font-size-2xl: 40px;
-  --font-size-3xl: 48px;
+  --font-size-lg: 26px;
+  --font-size-xl: 36px;
+  --font-size-2xl: 48px;
+  --font-size-3xl: 64px; /* より大きく、強弱をつける */
   
   /* 行間 */
   --line-height-tight: 1.4;
-  --line-height-normal: 1.6;
-  --line-height-relaxed: 1.8;
-  --line-height-loose: 2.0;
+  --line-height-normal: 1.8; /* ゆったりと */
+  --line-height-relaxed: 2.0;
+  --line-height-loose: 2.4;
   
-  /* 字間（letter-spacing）- 高級感を出す */
+  /* 字間（letter-spacing）- 洗練された余白 */
   --letter-spacing-tight: 0.02em;
-  --letter-spacing-normal: 0.05em;
-  --letter-spacing-wide: 0.1em;
-  --letter-spacing-wider: 0.15em;
+  --letter-spacing-normal: 0.08em; /* 全体的に広めに */
+  --letter-spacing-wide: 0.15em;
+  --letter-spacing-wider: 0.25em;
   
   /* 見出しの字間 */
-  --letter-spacing-heading: 0.05em;
-  --letter-spacing-heading-large: 0.1em;
+  --letter-spacing-heading: 0.1em;
+  --letter-spacing-heading-large: 0.2em;
   
   /* 本文の字間 */
-  --letter-spacing-body: 0.02em;
-  --letter-spacing-body-wide: 0.05em;
+  --letter-spacing-body: 0.05em;
+  --letter-spacing-body-wide: 0.1em;
   
   /* 縦書きテキストの字間 */
   --letter-spacing-vertical: 0.1em;

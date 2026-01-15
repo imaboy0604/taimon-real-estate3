@@ -1,13 +1,44 @@
 <script>
+  import { onMount } from 'svelte';
+
+  let sectionElement;
+  let isVisible = false;
+
+  onMount(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isVisible = true;
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    if (sectionElement) {
+      observer.observe(sectionElement);
+    }
+
+    return () => {
+      if (sectionElement) {
+        observer.unobserve(sectionElement);
+      }
+    };
+  });
 </script>
 
-<section class="features-section">
+<section class="features-section" class:visible={isVisible} bind:this={sectionElement}>
   <div class="container">
     <div class="content">
       <div class="left">
         <h2 class="title">私たちの想い</h2>
       </div>
-      
+
       <div class="right">
         <div class="mission-content">
           <p class="mission-text">
@@ -28,21 +59,31 @@
 <style>
   .features-section {
     position: relative;
-    background: url('/images/gallery-1.jpg') center/cover;
-    padding: 120px 80px 80px;
+    background: url("/images/gallery-1.jpg") center/cover;
+    padding: 120px 80px;
     overflow: hidden;
-    clip-path: polygon(0 10%, 100% 0%, 100% 90%, 0% 100%);
-    margin-top: -50px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .features-section.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .features-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.88) 100%
+    );
     z-index: 0;
   }
 
@@ -64,11 +105,12 @@
   }
 
   .title {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 44px;
     font-weight: 500;
     line-height: 1.18;
-    color: #12161D;
+    color: #12161d;
+    letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .right {
@@ -84,12 +126,12 @@
   }
 
   .mission-text {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 18px;
     font-weight: 400;
-    line-height: 2;
-    color: #61656E;
-    letter-spacing: 0.05em;
+    line-height: 1.8;
+    color: #61656e;
+    letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
   @media (max-width: 1024px) {
@@ -105,9 +147,7 @@
 
   @media (max-width: 768px) {
     .features-section {
-      padding: 60px 20px;
-      clip-path: polygon(0 5%, 100% 0%, 100% 95%, 0% 100%);
-      margin-top: -30px;
+      padding: 80px 20px;
     }
 
     .content {

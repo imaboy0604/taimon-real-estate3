@@ -1,6 +1,25 @@
+<script>
+  // 泡のエフェクト用の配列
+  const bubbles = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 8 + 4, // 4-12px
+    left: Math.random() * 100, // 0-100%
+    delay: Math.random() * 5, // 0-5s
+    duration: Math.random() * 3 + 8, // 8-11s
+  }));
+</script>
+
 <section class="hero-section">
   <div class="overlay-top"></div>
-  <div class="overlay-bottom"></div>
+  <div class="overlay-bottom">
+    <!-- 泡のエフェクト -->
+    {#each bubbles as bubble}
+      <div
+        class="bubble"
+        style="left: {bubble.left}%; width: {bubble.size}px; height: {bubble.size}px; animation-delay: {bubble.delay}s; animation-duration: {bubble.duration}s;"
+      ></div>
+    {/each}
+  </div>
 
   <div class="hero-content">
     <h1 class="hero-title">
@@ -56,53 +75,120 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 120px;
-    background: white;
+    height: 150px;
     z-index: 2;
-    clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0% 100%);
-    animation: waveClip 10s ease-in-out infinite;
+    overflow: hidden;
   }
   
-  /* 波打つようなアクション - clip-pathで波の形をアニメーション */
-  @keyframes waveClip {
-    0%, 100% {
-      clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0% 100%);
-    }
-    25% {
-      clip-path: polygon(0 35%, 100% 5%, 100% 100%, 0% 100%);
-    }
-    50% {
-      clip-path: polygon(0 45%, 100% -5%, 100% 100%, 0% 100%);
-    }
-    75% {
-      clip-path: polygon(0 35%, 100% 5%, 100% 100%, 0% 100%);
-    }
-  }
-  
-  /* より滑らかな波の効果 - グラデーションオーバーレイ */
+  /* 半透明な波のベース */
   .overlay-bottom::before {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
     height: 100%;
     background: linear-gradient(
       180deg,
       rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.3) 30%,
-      rgba(255, 255, 255, 0.7) 60%,
+      rgba(255, 255, 255, 0.4) 20%,
+      rgba(255, 255, 255, 0.7) 50%,
+      rgba(255, 255, 255, 0.9) 80%,
       rgba(255, 255, 255, 1) 100%
     );
-    animation: waveGradient 12s ease-in-out infinite;
+    clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0% 100%);
+    animation: waveClip 8s ease-in-out infinite;
   }
   
-  @keyframes waveGradient {
+  /* 波の動きをより滑らかに */
+  @keyframes waveClip {
     0%, 100% {
-      transform: translateY(0);
+      clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    25% {
+      clip-path: polygon(0 35%, 100% 8%, 100% 100%, 0% 100%);
     }
     50% {
-      transform: translateY(-5px);
+      clip-path: polygon(0 45%, 100% -5%, 100% 100%, 0% 100%);
+    }
+    75% {
+      clip-path: polygon(0 38%, 100% 5%, 100% 100%, 0% 100%);
+    }
+  }
+  
+  /* 追加の波の層（より自然な動き） */
+  .overlay-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 30%,
+      rgba(255, 255, 255, 0.5) 60%,
+      rgba(255, 255, 255, 0.85) 90%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    clip-path: polygon(0 42%, 100% 2%, 100% 100%, 0% 100%);
+    animation: waveClip2 10s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+  
+  @keyframes waveClip2 {
+    0%, 100% {
+      clip-path: polygon(0 42%, 100% 2%, 100% 100%, 0% 100%);
+    }
+    33% {
+      clip-path: polygon(0 38%, 100% 6%, 100% 100%, 0% 100%);
+    }
+    66% {
+      clip-path: polygon(0 46%, 100% -3%, 100% 100%, 0% 100%);
+    }
+  }
+  
+  /* 泡のエフェクト */
+  .bubble {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
+    animation: bubbleRise linear infinite;
+    pointer-events: none;
+  }
+  
+  @keyframes bubbleRise {
+    0% {
+      transform: translateY(0) scale(0.8);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-75px) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-150px) scale(1.2);
+      opacity: 0;
+    }
+  }
+  
+  /* 泡に揺れの動きを追加 */
+  .bubble:nth-child(odd) {
+    animation-name: bubbleRise, bubbleSway;
+    animation-duration: inherit, 3s;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+  }
+  
+  @keyframes bubbleSway {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(10px);
     }
   }
 

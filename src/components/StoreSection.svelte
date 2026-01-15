@@ -7,31 +7,38 @@
     { id: 3, src: '/images/store-interior-2.jpg', alt: '店舗内観2', label: '内観' },
   ];
   
-  let currentIndex = 0;
-  let intervalId;
-  
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % storeImages.length;
-  }
-  
-  function prevImage() {
-    currentIndex = (currentIndex - 1 + storeImages.length) % storeImages.length;
-  }
-  
-  function goToImage(index) {
-    currentIndex = index;
-  }
+  let sectionElement;
+  let isVisible = false;
   
   onMount(() => {
-    // 5秒ごとに自動切り替え
-    intervalId = setInterval(nextImage, 5000);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isVisible = true;
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    if (sectionElement) {
+      observer.observe(sectionElement);
+    }
+
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (sectionElement) {
+        observer.unobserve(sectionElement);
+      }
     };
   });
 </script>
 
-<section class="store-section">
+<section class="store-section" class:visible={isVisible} bind:this={sectionElement}>
   <div class="container">
     <div class="header">
       <h2 class="title">店舗紹介</h2>
@@ -41,42 +48,17 @@
       </p>
     </div>
 
-    <div class="store-carousel">
-      <div class="carousel-container">
-        <button class="carousel-button prev" on:click={prevImage} aria-label="前の画像">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        
-        <div class="carousel-slide">
-          {#each storeImages as image, index}
-            <div class="slide-item" class:active={index === currentIndex}>
-              <div class="image-wrapper">
-                <img src={image.src} alt={image.alt} />
-                <div class="image-label">{image.label}</div>
-              </div>
+    <div class="store-gallery">
+      {#each storeImages as image}
+        <div class="gallery-item">
+          <div class="image-wrapper">
+            <img src={image.src} alt={image.alt} />
+            <div class="image-overlay">
+              <span class="image-label">{image.label}</span>
             </div>
-          {/each}
+          </div>
         </div>
-        
-        <button class="carousel-button next" on:click={nextImage} aria-label="次の画像">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-      
-      <div class="carousel-indicators">
-        {#each storeImages as image, index}
-          <button 
-            class="indicator" 
-            class:active={index === currentIndex}
-            on:click={() => goToImage(index)}
-            aria-label="画像{index + 1}に移動"
-          ></button>
-        {/each}
-      </div>
+      {/each}
     </div>
 
     <div class="store-info">
@@ -102,8 +84,14 @@
     background: url('/images/gallery-2.jpg') center/cover;
     padding: 120px 80px;
     overflow: hidden;
-    clip-path: polygon(0 0%, 100% 10%, 100% 90%, 0% 100%);
-    margin-top: -50px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .store-section.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .store-section::before {
@@ -130,84 +118,43 @@
   }
 
   .title {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 44px;
     font-weight: 500;
     line-height: 1.18;
     color: #12161D;
     margin-bottom: 24px;
+    letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .subtitle {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 18px;
     font-weight: 400;
     line-height: 1.44;
     color: #61656E;
+    letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
-  .store-carousel {
+  .store-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
     margin-bottom: 80px;
   }
 
-  .carousel-container {
+  .gallery-item {
     position: relative;
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .carousel-button {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #12161D;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10;
-    flex-shrink: 0;
-  }
-
-  .carousel-button:hover {
-    background: white;
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  .carousel-button:active {
-    transform: scale(0.95);
-  }
-
-  .carousel-slide {
-    position: relative;
-    width: 100%;
-    height: 400px;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  }
-
-  .slide-item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-  }
-
-  .slide-item.active {
-    opacity: 1;
-    z-index: 1;
   }
 
   .image-wrapper {
@@ -221,47 +168,34 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover .image-wrapper img {
+    transform: scale(1.05);
+  }
+
+  .image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+    padding: 24px 20px 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .gallery-item:hover .image-overlay {
+    opacity: 1;
   }
 
   .image-label {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
-    font-size: 14px;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
+    font-size: 16px;
     font-weight: 500;
-    z-index: 2;
-  }
-
-  .carousel-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 24px;
-  }
-
-  .indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid #12161D;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-  }
-
-  .indicator.active {
-    background: #12161D;
-    transform: scale(1.2);
-  }
-
-  .indicator:hover {
-    transform: scale(1.1);
+    color: white;
+    letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
   .store-info {
@@ -277,29 +211,28 @@
   }
 
   .info-title {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 24px;
     font-weight: 500;
     line-height: 1.33;
     color: #12161D;
     margin-bottom: 16px;
+    letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .info-text {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 16px;
     font-weight: 400;
     line-height: 1.8;
     color: #61656E;
+    letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
   @media (max-width: 1024px) {
-    .carousel-container {
-      max-width: 500px;
-    }
-
-    .carousel-slide {
-      height: 350px;
+    .store-gallery {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
     }
 
     .store-info {
@@ -311,8 +244,6 @@
   @media (max-width: 768px) {
     .store-section {
       padding: 80px 20px;
-      clip-path: polygon(0 0%, 100% 5%, 100% 95%, 0% 100%);
-      margin-top: -30px;
     }
 
     .header {
@@ -323,18 +254,10 @@
       font-size: 36px;
     }
 
-    .carousel-container {
-      max-width: 100%;
-      gap: 8px;
-    }
-
-    .carousel-button {
-      width: 40px;
-      height: 40px;
-    }
-
-    .carousel-slide {
-      height: 300px;
+    .store-gallery {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 60px;
     }
 
     .store-info {

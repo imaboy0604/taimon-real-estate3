@@ -2,6 +2,7 @@
    デザイントークンのインポート
    ============================================ */
 @import './src/styles/design-tokens.css';
+@import './src/styles/animations.css';
 
 /* ============================================
    リセット & ベーススタイル
@@ -32,7 +33,12 @@ body {
 /* ============================================
    タイポグラフィ - 見出し
    ============================================ */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-family-serif);
   font-weight: 500;
   line-height: var(--line-height-tight);
@@ -165,36 +171,36 @@ a:hover {
   html {
     font-size: 14px;
   }
-  
+
   body {
     font-size: var(--font-size-sm);
     letter-spacing: var(--letter-spacing-tight);
   }
-  
+
   h1 {
     font-size: var(--font-size-2xl);
   }
-  
+
   h2 {
     font-size: var(--font-size-xl);
   }
-  
+
   h3 {
     font-size: var(--font-size-lg);
   }
-  
+
   .section {
     padding: var(--spacing-8) 0;
   }
-  
+
   .section-large {
     padding: var(--spacing-12) 0;
   }
-  
+
   .container {
     padding: 0 var(--spacing-2);
   }
-  
+
   /* モバイルでは縦書きを横書きに */
   .text-vertical,
   .text-vertical-wide {

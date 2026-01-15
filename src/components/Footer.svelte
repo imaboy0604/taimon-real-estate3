@@ -65,23 +65,11 @@
 <style>
   .footer-section {
     position: relative;
-    background: url('/images/gallery-3.jpg') center/cover;
+    background-color: #FAFAFA;
     padding: 80px 80px 40px;
     overflow: hidden;
-    clip-path: polygon(0 0%, 100% 10%, 100% 100%, 0% 100%);
-    margin-top: -50px;
   }
 
-  .footer-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, rgba(250, 250, 251, 0.95) 0%, rgba(250, 250, 251, 0.98) 100%);
-    z-index: 0;
-  }
 
   .container {
     position: relative;
@@ -109,11 +97,12 @@
   }
 
   .tagline {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 18px;
     font-weight: 400;
     line-height: 1.44;
     color: #61656E;
+    letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
   .links-section {
@@ -129,11 +118,12 @@
   }
 
   .column-title {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 18px;
     font-weight: 500;
     line-height: 1.44;
     color: #12161D;
+    letter-spacing: var(--letter-spacing-heading, 0.05em);
   }
 
   .links {
@@ -143,12 +133,13 @@
   }
 
   .links a {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
     color: #61656E;
     text-decoration: none;
     transition: color 0.3s ease;
+    letter-spacing: var(--letter-spacing-body-wide, 0.05em);
   }
 
   .links a:hover {
@@ -170,10 +161,11 @@
   }
 
   .copyright {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 14px;
     font-weight: 400;
     color: #61656E;
+    letter-spacing: var(--letter-spacing-body, 0.02em);
   }
 
   .legal-links {
@@ -183,12 +175,13 @@
   }
 
   .legal-links a {
-    font-family: 'Shippori Mincho', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+    font-family: var(--font-family-serif, 'Noto Serif JP', 'Yu Mincho', '游明朝', serif);
     font-size: 14px;
     font-weight: 400;
     color: #61656E;
     text-decoration: none;
     transition: color 0.3s ease;
+    letter-spacing: var(--letter-spacing-body, 0.02em);
   }
 
   .legal-links a:hover {
@@ -209,8 +202,6 @@
   @media (max-width: 768px) {
     .footer-section {
       padding: 60px 20px 20px;
-      clip-path: polygon(0 0%, 100% 5%, 100% 100%, 0% 100%);
-      margin-top: -30px;
     }
 
     .content {
