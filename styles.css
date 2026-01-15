@@ -1,33 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ============================================
-   デザイントークンのインポート
+   デザイントークン - ベガハウス風デザインシステム
    ============================================ */
-@import './src/styles/design-tokens.css';
-@import './src/styles/animations.css';
+
+:root {
+    /* ============================================
+     カラーパレット - Warm & Luxurious
+     ============================================ */
+    /* 背景色: 真っ白ではなく、温かみのあるエクリュ・グレージュ系 */
+    --color-bg-primary: #FDFBF8;
+    /* 生成り色 (Ecru White) */
+    --color-bg-secondary: #F5F2EE;
+    /* 薄いグレージュ */
+    --color-bg-tertiary: #EBE8E1;
+    /* 少し濃いグレージュ */
+
+    --color-text-primary: #2C2825;
+    /* 墨色に近いダークグレー */
+    --color-text-secondary: #595550;
+    /* 落ち着いたグレー */
+    --color-text-light: #8C8884;
+    /* 明るめのグレー */
+
+    /* アクセントカラー: 深みのあるブロンズ・アースカラー */
+    --color-accent-subtle: #967D69;
+    /* 彩度を落としたブロンズ */
+    --color-accent-grey: #7D7873;
+    /* ウォームグレー */
+    --color-border: #E0DDD8;
+    /* 馴染みの良いボーダー色 */
+    --color-border-light: #F2EFEC;
+
+    /* ============================================
+     タイポグラフィ - Elegant Serif
+     ============================================ */
+    /* 欧文フォント（見出し用） */
+    --font-family-en: 'Cormorant Garamond', serif;
+
+    /* メインフォント（明朝体） */
+    --font-family-serif: 'Noto Serif JP', 'Yu Mincho', '游明朝', 'Hiragino Mincho ProN', 'MS PMincho', serif;
+
+    /* サブフォント（ゴシック体 - 本文用） */
+    --font-family-sans: 'Noto Sans JP', 'Meiryo UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+
+    /* デフォルトフォント（明朝体を主役に） */
+    --font-family-base: var(--font-family-serif);
+
+    /* フォントサイズ */
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-md: 18px;
+    --font-size-lg: 26px;
+    --font-size-xl: 36px;
+    --font-size-2xl: 48px;
+    --font-size-3xl: 64px;
+    /* より大きく、強弱をつける */
+
+    /* 行間 */
+    --line-height-tight: 1.4;
+    --line-height-normal: 1.8;
+    /* ゆったりと */
+    --line-height-relaxed: 2.0;
+    --line-height-loose: 2.4;
+
+    /* 字間（letter-spacing）- 洗練された余白 */
+    --letter-spacing-tight: 0.02em;
+    --letter-spacing-normal: 0.08em;
+    /* 全体的に広めに */
+    --letter-spacing-wide: 0.15em;
+    --letter-spacing-wider: 0.25em;
+
+    /* 見出しの字間 */
+    --letter-spacing-heading: 0.1em;
+    --letter-spacing-heading-large: 0.2em;
+
+    /* 本文の字間 */
+    --letter-spacing-body: 0.05em;
+    --letter-spacing-body-wide: 0.1em;
+
+    /* 縦書きテキストの字間 */
+    --letter-spacing-vertical: 0.1em;
+    --letter-spacing-vertical-wide: 0.15em;
+
+    /* ============================================
+     スペーシングシステム（8px基準のグリッド）
+     ============================================ */
+    --spacing-1: 8px;
+    --spacing-2: 16px;
+    --spacing-3: 24px;
+    --spacing-4: 32px;
+    --spacing-5: 40px;
+    --spacing-6: 48px;
+    --spacing-8: 64px;
+    --spacing-12: 96px;
+    --spacing-16: 128px;
+
+    /* セクション間の余白 */
+    --spacing-section: var(--spacing-12);
+    /* 96px */
+    --spacing-section-large: var(--spacing-16);
+    /* 128px */
+
+    /* 要素間の余白 */
+    --spacing-element: var(--spacing-3);
+    /* 24px */
+    --spacing-element-large: var(--spacing-6);
+    /* 48px */
+
+    /* コンテナのパディング */
+    --padding-container: var(--spacing-4);
+    /* 32px */
+    --padding-container-large: var(--spacing-6);
+    /* 48px */
+
+    /* ============================================
+     ブレークポイント
+     ============================================ */
+    --breakpoint-mobile: 768px;
+    --breakpoint-tablet: 1024px;
+    --breakpoint-desktop: 1440px;
+
+    /* ============================================
+     トランジション
+     ============================================ */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* ============================================
+     影とエフェクト
+     ============================================ */
+    --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    /* ============================================
+     ボーダー
+     ============================================ */
+    --border-width: 1px;
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+}
+
+/* ============================================
+   アニメーション定義
+   ============================================ */
+
+/* フェードイン（下からふわっと） */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    opacity: 0;
+    /* JSでクラス付与時に表示制御する場合 */
+    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ズームイン（画像用） */
+@keyframes slowZoom {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.05);
+    }
+}
+
+.animate-slow-zoom {
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-slow-zoom:hover {
+    transform: scale(1.03);
+}
+
+/* 波打つエフェクト定義（SVGを使用するか、border-radiusで簡易的に再現） */
+@keyframes liquidMorph {
+    0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+
+    50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+
+    100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+}
+
+/* ============================================
+   グローバルスタイル (App.svelteから移動)
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--font-family-base,
+            "Noto Serif JP",
+            "Yu Mincho",
+            "游明朝",
+            "Hiragino Mincho ProN",
+            "MS PMincho",
+            serif);
+    color: var(--color-text-primary, #1a1a1a);
+    background-color: var(--color-bg-primary, #ffffff);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+main {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
 
 /* ============================================
    リセット & ベーススタイル
    ============================================ */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
-  font-size: 16px;
+    scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
-  color: var(--color-text-primary);
-  background-color: var(--color-bg-primary);
-  letter-spacing: var(--letter-spacing-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+    letter-spacing: var(--letter-spacing-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* ============================================
@@ -39,173 +282,173 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-family-serif);
-  font-weight: 500;
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-heading);
-  color: var(--color-text-primary);
+    font-family: var(--font-family-serif);
+    font-weight: 500;
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-heading);
+    color: var(--color-text-primary);
 }
 
 h1 {
-  font-size: var(--font-size-3xl);
-  letter-spacing: var(--letter-spacing-heading-large);
+    font-size: var(--font-size-3xl);
+    letter-spacing: var(--letter-spacing-heading-large);
 }
 
 h2 {
-  font-size: var(--font-size-2xl);
-  letter-spacing: var(--letter-spacing-heading);
+    font-size: var(--font-size-2xl);
+    letter-spacing: var(--letter-spacing-heading);
 }
 
 h3 {
-  font-size: var(--font-size-xl);
-  letter-spacing: var(--letter-spacing-heading);
+    font-size: var(--font-size-xl);
+    letter-spacing: var(--letter-spacing-heading);
 }
 
 h4 {
-  font-size: var(--font-size-lg);
-  letter-spacing: var(--letter-spacing-heading);
+    font-size: var(--font-size-lg);
+    letter-spacing: var(--letter-spacing-heading);
 }
 
 /* ============================================
    タイポグラフィ - 本文
    ============================================ */
 p {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
-  letter-spacing: var(--letter-spacing-body);
-  color: var(--color-text-primary);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    letter-spacing: var(--letter-spacing-body);
+    color: var(--color-text-primary);
 }
 
 /* 本文のゴシック体バージョン（必要に応じて） */
 .text-sans {
-  font-family: var(--font-family-sans);
-  letter-spacing: var(--letter-spacing-body-wide);
+    font-family: var(--font-family-sans);
+    letter-spacing: var(--letter-spacing-body-wide);
 }
 
 /* ============================================
    縦書きテキスト
    ============================================ */
 .text-vertical {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-family: var(--font-family-serif);
-  letter-spacing: var(--letter-spacing-vertical);
-  line-height: var(--line-height-loose);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--font-family-serif);
+    letter-spacing: var(--letter-spacing-vertical);
+    line-height: var(--line-height-loose);
 }
 
 .text-vertical-wide {
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-family: var(--font-family-serif);
-  letter-spacing: var(--letter-spacing-vertical-wide);
-  line-height: var(--line-height-loose);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--font-family-serif);
+    letter-spacing: var(--letter-spacing-vertical-wide);
+    line-height: var(--line-height-loose);
 }
 
 /* ============================================
    リンク
    ============================================ */
 a {
-  color: var(--color-text-primary);
-  text-decoration: none;
-  transition: color var(--transition-base);
-  letter-spacing: var(--letter-spacing-body);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--transition-base);
+    letter-spacing: var(--letter-spacing-body);
 }
 
 a:hover {
-  color: var(--color-accent-subtle);
+    color: var(--color-accent-subtle);
 }
 
 /* ============================================
    コンテナ
    ============================================ */
 .container {
-  max-width: var(--breakpoint-desktop);
-  margin: 0 auto;
-  padding: 0 var(--padding-container);
+    max-width: var(--breakpoint-desktop);
+    margin: 0 auto;
+    padding: 0 var(--padding-container);
 }
 
 @media (min-width: 1024px) {
-  .container {
-    padding: 0 var(--padding-container-large);
-  }
+    .container {
+        padding: 0 var(--padding-container-large);
+    }
 }
 
 /* ============================================
    セクション
    ============================================ */
 .section {
-  padding: var(--spacing-section) 0;
+    padding: var(--spacing-section) 0;
 }
 
 .section-large {
-  padding: var(--spacing-section-large) 0;
+    padding: var(--spacing-section-large) 0;
 }
 
 /* ============================================
    ヘッダー - 写真がくっきり見えるように最小限のデザイン
    ============================================ */
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  /* 写真を邪魔しない透明な背景 */
-  background-color: transparent;
-  backdrop-filter: none;
-  transition: all var(--transition-base);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    /* 写真を邪魔しない透明な背景 */
+    background-color: transparent;
+    backdrop-filter: none;
+    transition: all var(--transition-base);
 }
 
 /* スクロール時に少し背景を追加（オプション） */
 .header.scrolled {
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-subtle);
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-subtle);
 }
 
 /* ============================================
    レスポンシブ - モバイル
    ============================================ */
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
+    html {
+        font-size: 14px;
+    }
 
-  body {
-    font-size: var(--font-size-sm);
-    letter-spacing: var(--letter-spacing-tight);
-  }
+    body {
+        font-size: var(--font-size-sm);
+        letter-spacing: var(--letter-spacing-tight);
+    }
 
-  h1 {
-    font-size: var(--font-size-2xl);
-  }
+    h1 {
+        font-size: var(--font-size-2xl);
+    }
 
-  h2 {
-    font-size: var(--font-size-xl);
-  }
+    h2 {
+        font-size: var(--font-size-xl);
+    }
 
-  h3 {
-    font-size: var(--font-size-lg);
-  }
+    h3 {
+        font-size: var(--font-size-lg);
+    }
 
-  .section {
-    padding: var(--spacing-8) 0;
-  }
+    .section {
+        padding: var(--spacing-8) 0;
+    }
 
-  .section-large {
-    padding: var(--spacing-12) 0;
-  }
+    .section-large {
+        padding: var(--spacing-12) 0;
+    }
 
-  .container {
-    padding: 0 var(--spacing-2);
-  }
+    .container {
+        padding: 0 var(--spacing-2);
+    }
 
-  /* モバイルでは縦書きを横書きに */
-  .text-vertical,
-  .text-vertical-wide {
-    writing-mode: horizontal-tb;
-    text-orientation: initial;
-    letter-spacing: var(--letter-spacing-body);
-  }
+    /* モバイルでは縦書きを横書きに */
+    .text-vertical,
+    .text-vertical-wide {
+        writing-mode: horizontal-tb;
+        text-orientation: initial;
+        letter-spacing: var(--letter-spacing-body);
+    }
 }
