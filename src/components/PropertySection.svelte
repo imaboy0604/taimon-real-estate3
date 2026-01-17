@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { reveal } from "../actions/reveal";
     // Property/Case Study Section
     // State: Under Preparation (Coming Soon)
 </script>
@@ -7,14 +8,14 @@
     <div class="container">
         <!-- Header with Vertical Text -->
         <div class="header-content">
-            <div class="title-area">
+            <div class="title-area" use:reveal>
                 <h2 class="vertical-title">
                     <span class="main">Properties</span>
                     <span class="sub">取扱物件</span>
                 </h2>
             </div>
 
-            <div class="message-area">
+            <div class="message-area" use:reveal={{ delay: 200 }}>
                 <p class="vertical-text">
                     住まいは、人生の舞台。<br />
                     私たちがお届けするのは、<br />
@@ -30,7 +31,7 @@
         </div>
 
         <!-- Coming Soon Display -->
-        <div class="coming-soon-container">
+        <div class="coming-soon-container" use:reveal={{ delay: 400 }}>
             <div class="coming-soon-content">
                 <div class="icon-wrapper">
                     <svg

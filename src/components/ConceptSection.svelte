@@ -79,7 +79,7 @@
 
 <style>
     .concept-section {
-        padding: 120px 0;
+        padding: 120px 0 60px 0; /* Reduced bottom padding from 120 to 60 */
         background-color: #fff;
         width: 100%;
         overflow: hidden;

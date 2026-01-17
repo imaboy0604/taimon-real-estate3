@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { reveal } from "../actions/reveal";
+
     // Mock Data for the Blog/Event Slider
     const blogPosts = [
         {
@@ -49,12 +51,14 @@
 
 <section class="blog-section">
     <div class="container-fluid">
-        <div class="blog-header">
+        <div class="blog-header" use:reveal>
             <h2 class="section-title">ブログ</h2>
-            <a href="/blog" class="view-more">View More</a>
+            <div use:reveal={{ delay: 200 }}>
+                <a href="/blog" class="view-more">View More</a>
+            </div>
         </div>
 
-        <div class="marquee-container">
+        <div class="marquee-container" use:reveal={{ delay: 400 }}>
             <div class="marquee-track">
                 {#each displayPosts as post, i}
                     <div class="marquee-item">
@@ -84,10 +88,10 @@
 
 <style>
     .blog-section {
-        padding: 100px 0;
+        padding: 60px 0;
         background-color: #fff;
         overflow: hidden;
-        position: relative; /* Ensure stacking context */
+        position: relative;
         z-index: 1;
     }
 
@@ -98,14 +102,14 @@
     }
 
     .blog-header {
-        position: relative; /* Explicitly relative to avoid weird sticky behavior */
+        position: relative;
         text-align: center;
-        margin-bottom: 60px;
+        margin-bottom: 40px;
         max-width: 1400px;
         margin-left: auto;
         margin-right: auto;
         padding: 0 24px;
-        background-color: transparent; /* Ensure no weird background issues */
+        background-color: transparent;
     }
 
     .section-title {
@@ -140,7 +144,7 @@
         width: 100%;
         display: flex;
         position: relative;
-        z-index: 2; /* Ensure marquee is above/below correctly? */
+        z-index: 2;
     }
 
     .marquee-track {

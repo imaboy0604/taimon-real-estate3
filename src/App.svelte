@@ -2,7 +2,6 @@
   import NavigationBar from "./components/NavigationBar.svelte";
   import HeroSection from "./components/HeroSection.svelte";
   import FeaturesSection from "./components/FeaturesSection.svelte";
-  // import StoreSection from "./components/StoreSection.svelte";
   import ConceptSection from "./components/ConceptSection.svelte";
   import BlogSection from "./components/BlogSection.svelte";
   import PropertySection from "./components/PropertySection.svelte";
@@ -30,7 +29,6 @@
   <NavigationBar />
   <FeaturesSection />
   <ConceptSection />
-  <!-- <StoreSection /> -->
   <BlogSection />
   <PropertySection />
   <Features3Section />
