@@ -4,7 +4,8 @@
   import FeaturesSection from "./components/FeaturesSection.svelte";
   // import StoreSection from "./components/StoreSection.svelte";
   import ConceptSection from "./components/ConceptSection.svelte";
-  import Features2Section from "./components/Features2Section.svelte";
+  import BlogSection from "./components/BlogSection.svelte";
+  import PropertySection from "./components/PropertySection.svelte";
   import Features3Section from "./components/Features3Section.svelte";
   import FAQSection from "./components/FAQSection.svelte";
   import Footer from "./components/Footer.svelte";
@@ -30,7 +31,8 @@
   <FeaturesSection />
   <ConceptSection />
   <!-- <StoreSection /> -->
-  <Features2Section />
+  <BlogSection />
+  <PropertySection />
   <Features3Section />
   <FAQSection />
   <Footer />

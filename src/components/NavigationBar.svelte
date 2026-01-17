@@ -101,31 +101,10 @@
     background-color: var(--color-text-primary, #1a1a1a);
   }
 
-  /* モバイル対応 */
-  @media (max-width: 768px) {
-    .nav-container {
-      padding: 0 var(--spacing-2, 16px);
-    }
-
-    .nav-list {
-      flex-wrap: wrap;
-      gap: var(--spacing-2, 16px);
-      padding: var(--spacing-2, 16px) 0;
-    }
-
-    .nav-link {
-      font-size: var(--font-size-sm, 14px);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .nav-list {
-      flex-direction: column;
-      gap: var(--spacing-1, 8px);
-    }
-
-    .nav-link {
-      font-size: var(--font-size-sm, 14px);
+  /* モバイル・タブレットでは非表示 (PC表示の時は現在のまま) */
+  @media (max-width: 1024px) {
+    .navigation-bar {
+      display: none;
     }
   }
 </style>
